@@ -36,7 +36,9 @@
 
 <script>
     (function(){
-        const API = 'https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=AP152&hidepast=true';
+        // after
+        const RAW = 'https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=AP152&hidepast=true';
+        const API = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW)}`;
         const dateEl    = document.getElementById('date');
         const loadBtn   = document.getElementById('load');
         const freeList  = document.getElementById('freeList');

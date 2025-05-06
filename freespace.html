@@ -63,7 +63,7 @@
             freeList.innerHTML = 'Loading…';
             let data;
             try {
-                data = await (await fetch(API)).json();
+                data = await fetch(API).then(r=>r.json());
             } catch(err) {
                 freeList.textContent = 'Fetch error: '+err;
                 return;

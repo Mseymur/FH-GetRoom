@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Room Schedules</title>
+  <style>
+    /* Basic layout */
+    body { font-family: sans-serif; max-width: 800px; margin: 2em auto; background: #f5f5f5; }
+    h1 { text-align: center; margin-bottom: 1em; }
+
+    /* Controls */
+    .controls {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1em;
+      margin-bottom: 2em;
+    }
+    .controls label, .controls button, .controls select, .controls input {
+      font-size: 1rem;
+    }
+
+    /* Schedule list as cards */
+    #schedule { list-style: none; padding: 0; display: grid; grid-gap: 1em; }
+    #schedule li.card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border-left: 6px solid #888; /* default accent */
+    }
+
+    .card-header {
+      padding: 0.75em 1em;
+      background: #fafafa;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-body {
+      padding: 0.75em 1em;
+    }
+
+    .event {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5em;
+    }
+    .event:last-child { margin-bottom: 0; }
+    .event .time {
+      flex: 0 0 6.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .event .title {
+      flex: 1;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Room Schedules</h1>
+
+<div class="controls">
+  <label>
+    Date:
+    <input type="date" id="date">
+  </label>
+  <button id="load">Load</button>
+  <button id="freeBtn">Show Free Rooms</button>
+  <label>
+    Floor:
+    <select id="floor"><option value="">All Floors</option></select>
+  </label>
+  <label>
+    Room:
+    <select id="room"><option value="">All Rooms</option></select>
+  </label>
+</div>
+
+<ul id="schedule">…</ul>
+
+<script>
+  (function(){
+    // after
+    const RAW = 'https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=AP152&hidepast=true';
+    const API = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW)}`;
+    const dateEl     = document.getElementById('date');
+    const loadBtn    = document.getElementById('load');
+    const freeBtn    = document.getElementById('freeBtn');
+    const floorEl    = document.getElementById('floor');
+    const roomEl     = document.getElementById('room');
+    const scheduleEl = document.getElementById('schedule');
+
+
+    dateEl.value = new Date().toISOString().slice(0,10);
+    let rawData = [], masterRooms = [];
+
+    function extractCode(e) {
+      const RX = /\b(AP152\.\d{2}\.\d{3}[A-Za-z]?)\b/;
+      let m = (e.title||'').match(RX);
+      if (m) return m[1];
+      if (Array.isArray(e.className)) {
+        for (let cls of e.className) if ((m = cls.match(RX))) return m[1];
+      }
+      return null;
+    }
+
+    function buildMasterLists() {
+      const codes = new Set(rawData.map(extractCode).filter(Boolean));
+      masterRooms = [...codes].map(code => {
+        const [ , floor, roomNum ] = code.split('.');
+        return { code, floor, roomNum };
+      });
+      // Floors
+      floorEl.innerHTML = '<option value="">All Floors</option>';
+      [...new Set(masterRooms.map(r=>r.floor))].sort()
+              .forEach(f=>{
+                floorEl.appendChild(new Option(`Floor ${f}`, f));
+              });
+      populateRooms();
+    }
+
+    function populateRooms() {
+      const selF = floorEl.value;
+      roomEl.innerHTML = '<option value="">All Rooms</option>';
+      masterRooms
+              .filter(r=>!selF||r.floor===selF)
+              .map(r=>r.roomNum)
+              .filter((v,i,a)=>a.indexOf(v)===i)
+              .sort()
+              .forEach(rn=>{
+                roomEl.appendChild(new Option(rn, rn));
+              });
+    }
+
+    function render() {
+      const [y,m,d] = dateEl.value.split('-');
+      const dateStr = `${d}.${m}.${y}`;
+      const selF = floorEl.value, selR = roomEl.value;
+
+      // group todays events
+      const buckets = {};
+      rawData.forEach(e=>{
+        if (e.start.slice(0,10).split('-').reverse().join('.') !== dateStr) return;
+        const code = extractCode(e);
+        if (!code) return;
+        const [ , floor, roomNum ] = code.split('.');
+        if (selF && floor!==selF) return;
+        if (selR && roomNum!==selR) return;
+        (buckets[code] = buckets[code]||[]).push(e);
+      });
+
+      scheduleEl.innerHTML = '';
+      if (!Object.keys(buckets).length) {
+        scheduleEl.innerHTML = '<li>No classes match that filter.</li>';
+        return;
+      }
+
+      Object.entries(buckets).forEach(([code, list])=>{
+        // create card
+        const li = document.createElement('li');
+        li.className = 'card';
+        // accent color from first event
+        if (list[0].color) li.style.borderLeftColor = list[0].color;
+
+        li.innerHTML = `
+          <div class="card-header">${code}</div>
+          <div class="card-body"></div>
+        `;
+        const body = li.querySelector('.card-body');
+
+        list.sort((a,b)=>a.start.localeCompare(b.start))
+                .forEach(ev => {
+                  const row = document.createElement('div');
+                  row.className = 'event';
+                  row.innerHTML = `
+            <span class="time">${ev.start.slice(11,16)}–${ev.end.slice(11,16)}</span>
+            <span class="title">${ev.title}</span>
+          `;
+                  body.appendChild(row);
+                });
+
+        scheduleEl.appendChild(li);
+      });
+    }
+
+    function minutesBetween(t0,t1){
+      const [h0,m0]=t0.split(':').map(Number),
+              [h1,m1]=t1.split(':').map(Number);
+      return (h1*60+m1)-(h0*60+m0);
+    }
+
+    function computeFree(){
+      const [y,m,d] = dateEl.value.split('-');
+      const dateStr = `${d}.${m}.${y}`;
+      const WORK_START='08:00', WORK_END='18:15';
+      const rooms = [...new Set(rawData.map(extractCode).filter(Boolean))];
+      const freeSlots = [];
+
+      rooms.forEach(code=>{
+        const evs = rawData
+                .filter(e=>e.start.slice(0,10).split('-').reverse().join('.')===dateStr
+                        && extractCode(e)===code)
+                .map(e=>({start:e.start.slice(11,16),end:e.end.slice(11,16)}))
+                .sort((a,b)=>a.start.localeCompare(b.start));
+
+        let cursor=WORK_START;
+        evs.forEach(ev=>{
+          if(ev.start>cursor){
+            freeSlots.push({code,start:cursor,end:ev.start,
+              mins:minutesBetween(cursor,ev.start)});
+          }
+          if(ev.end>cursor) cursor=ev.end;
+        });
+        if(cursor<WORK_END){
+          freeSlots.push({code,start:cursor,end:WORK_END,
+            mins:minutesBetween(cursor,WORK_END)});
+        }
+      });
+
+      // sort by longest free first
+      freeSlots.sort((a,b)=>b.mins-a.mins);
+      return freeSlots;
+    }
+
+    function showFree() {
+      const slots = computeFree();
+      const w = window.open();
+      w.document.write(`
+        <html><head><title>Free Rooms</title>
+        <style>
+          body{font-family:sans-serif;padding:1em;max-width:600px;margin:auto}
+          h1{text-align:center}
+          ul{list-style:none;padding:0}
+          li{display:flex;justify-content:space-between;align-items:center;
+              padding:.75em 1em;border:1px solid #ddd;border-radius:4px;
+              margin-bottom:.5em;background:#fafafa;}
+          .room{font-weight:600}
+          .interval{color:#555}
+          .duration{background:#4caf50;color:#fff;padding:0.2em .6em;
+                    border-radius:3px;font-size:.85em}
+        </style>
+        </head><body>
+          <h1>Free Rooms — ${dateEl.value}</h1>
+          <ul>
+            ${slots.map(s=>{
+        const h=Math.floor(s.mins/60),m=s.mins%60;
+        const dur=(h? h+'h ':'')+(m? m+'m':'');
+        return `<li>
+                <span class="room">${s.code}</span>
+                <span class="interval">${s.start}–${s.end}</span>
+                <span class="duration">${dur}</span>
+              </li>`;
+      }).join('')}
+          </ul>
+        </body></html>
+      `);
+      w.document.close();
+    }
+
+    // event wiring
+    floorEl.addEventListener('change', ()=>{
+      populateRooms(); render();
+    });
+    roomEl.addEventListener('change', render);
+    loadBtn.addEventListener('click', async()=>{
+      scheduleEl.textContent='Loading…';
+      rawData = await fetch(API).then(r=>r.json());
+      buildMasterLists(); render();
+    });
+    freeBtn.addEventListener('click', showFree);
+
+    // initial load
+    loadBtn.click();
+  })();
+</script>
+</body>
+</html>

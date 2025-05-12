@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Free Rooms</title>
+    <style>
+        body { font-family: sans-serif; max-width:700px; margin:2em auto; }
+        h1 { text-align:center; margin-bottom:1em; }
+        p { text-align:center; }
+        label, button { font-size:1rem; margin-right:.5em; }
+        ul { list-style:none; padding:0; }
+        li {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:.75em 1em; border:1px solid #ddd; border-radius:4px;
+            margin-bottom:.5em; background:#fafafa;
+        }
+        .room { font-weight:600; }
+        .interval { color:#555; }
+        .duration {
+            background:#4caf50; color:white; padding:.2em .6em; border-radius:3px;
+            font-size:.85em;
+        }
+    </style>
+</head>
+<body>
+<h1>Free Rooms</h1>
+
+<p>
+    <label>Date:
+        <input type="date" id="date">
+    </label>
+    <button id="load">Load Free Rooms</button>
+</p>
+
+<ul id="freeList">…</ul>
+
+<script>
+    (function(){
+        // after
+        const RAW = 'https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=AP152&hidepast=true';
+        const API = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW)}`;
+        const dateEl    = document.getElementById('date');
+        const loadBtn   = document.getElementById('load');
+        const freeList  = document.getElementById('freeList');
+
+        // default to today
+        dateEl.value = new Date().toISOString().slice(0,10);
+
+        // minutes between "HH:MM"
+        const minutesBetween = (t0,t1)=>{
+            const [h0,m0]=t0.split(':').map(Number),
+                [h1,m1]=t1.split(':').map(Number);
+            return (h1*60+m1)-(h0*60+m0);
+        };
+
+        // pull AP-code out of title
+        function extractCode(e){
+            const m = (e.title||'').match(/\b(AP152\.\d{2}\.\d{3}[A-Za-z]?)\b/);
+            return m && m[1];
+        }
+
+        async function loadFree(){
+            freeList.innerHTML = 'Loading…';
+            let data;
+            try {
+                data = await fetch(API).then(r=>r.json());
+            } catch(err) {
+                freeList.textContent = 'Fetch error: '+err;
+                return;
+            }
+
+            // build a map of room→today's intervals
+            const [selDate] = dateEl.value.split('T'); // YYYY-MM-DD
+            const byRoom = {};
+            data.forEach(e=>{
+                if (e.start.slice(0,10)!==selDate) return;
+                const code = extractCode(e);
+                if (!code) return;
+                byRoom[code] = byRoom[code]||[];
+                byRoom[code].push({
+                    start: e.start.slice(11,16),
+                    end:   e.end.slice(11,16)
+                });
+            });
+
+            // compute free gaps for each room
+            const WORK_START = '08:00', WORK_END = '18:15';
+            const freeSlots = [];
+
+            Object.entries(byRoom).forEach(([code, slots])=>{
+                slots.sort((a,b)=>a.start.localeCompare(b.start));
+                let cursor = WORK_START;
+                slots.forEach(s=>{
+                    if (s.start>cursor) {
+                        freeSlots.push({code, start:cursor, end:s.start,
+                            mins: minutesBetween(cursor,s.start)});
+                    }
+                    if (s.end>cursor) cursor = s.end;
+                });
+                if (cursor<WORK_END) {
+                    freeSlots.push({code, start:cursor, end:WORK_END,
+                        mins: minutesBetween(cursor,WORK_END)});
+                }
+            });
+
+            // ** sort by longest free first **
+            freeSlots.sort((a, b) => b.mins - a.mins);
+
+            // render
+            freeList.innerHTML = '';
+            if (!freeSlots.length) {
+                freeList.textContent = 'No free slots today.';
+                return;
+            }
+            freeSlots.forEach(slot => {
+                const { code, start, end, mins } = slot;
+                const h = Math.floor(mins/60), m = mins % 60;
+                const label = (h ? h + 'h ' : '') + (m ? m + 'm' : '');
+                const li = document.createElement('li');
+                li.innerHTML = `
+      <span class="room">${code}</span>
+      <span class="interval">${start}–${end}</span>
+      <span class="duration">${label}</span>
+    `;
+                freeList.appendChild(li);
+            });
+        }
+
+        loadBtn.addEventListener('click', loadFree);
+        loadFree();
+    })();
+</script>
+</body>
+</html>

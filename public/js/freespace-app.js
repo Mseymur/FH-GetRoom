@@ -58,6 +58,7 @@
     // Display building
     if(buildingDisplayEl) buildingDisplayEl.textContent = currentBuilding;
 
+
     // Fetch JSON utility
     async function fetchJSON(url){ const res = await fetch(url); if(!res.ok) throw new Error(res.statusText); return res.json(); }
 
@@ -143,18 +144,34 @@
 
     // Section renderers
     function showFreeNow(){
-        const t=timeEl.value; freeNowTimeEl.textContent=`at ${t}`;
-        freeNowSlots = allSlots.filter(s=>s.start<=t && t<s.end)
-            .map(s=>({ ...s, start:t, mins:minutesBetween(t,s.end) }))
-            .filter(s=>s.mins>0);
-        counts.now=0; renderSection(freeNowListEl, freeNowMoreBtn, freeNowSlots, 'now');
-    }
+        const t = timeEl.value;
+        freeNowTimeEl.textContent = `at ${t}`;
+        freeNowSlots = allSlots
+          .filter(s => s.start <= t && t < s.end)
+          .map(s => ({ ...s, start: t, mins: minutesBetween(t, s.end) }))
+          .filter(s => s.mins > 0);
+      
+        // clear out any old items
+        freeNowListEl.innerHTML = '';
+        counts.now = 0;
+      
+        if (freeNowSlots.length === 0) {
+          // **fallback** when there's nothing to show
+          freeNowListEl.innerHTML =
+            '<li class="no-rooms">Only Rooms from 8:00 Uhr to 18:15 Uhr are included. Change the time in the top left corner.</li>';
+          freeNowMoreBtn.style.display = 'none';
+        } else {
+          // render the normal paginated list
+          renderSection(freeNowListEl, freeNowMoreBtn, freeNowSlots, 'now');
+        }
+      }
     function showFreeSoon(){
         const t=timeEl.value; soonTimeEl.textContent=`after ${t}`;
         freeSoonSlots = allSlots.filter(s=>s.start>t && s.mins>=MIN_SOON_DURATION)
             .sort((a,b)=>minutesBetween(t,a.start)-minutesBetween(t,b.start));
         counts.soon=0; renderSection(soonListEl, soonMoreBtn, freeSoonSlots, 'soon');
     }
+    
 
     // Modal logic
     function openModal(code){

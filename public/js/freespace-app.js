@@ -158,7 +158,7 @@
         if (freeNowSlots.length === 0) {
           // **fallback** when there's nothing to show
           freeNowListEl.innerHTML =
-            '<li class="no-rooms">Only Rooms from 8:00 Uhr to 18:15 Uhr are included. Change the time in the top left corner.</li>';
+            '<li class="no-rooms">Only from 8:00 Uhr to 18:15 Uhr Rooms are visible. Change the time in the top left corner to see the schedule.</li>';
           freeNowMoreBtn.style.display = 'none';
         } else {
           // render the normal paginated list

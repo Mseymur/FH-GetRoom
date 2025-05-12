@@ -248,7 +248,7 @@
 
             if (fetchedStructure.building !== buildingToFetchFor) {
                 console.error(`app.js: fetchRoomStructure - Mismatch! Expected structure for ${buildingToFetchFor}, but server returned for ${fetchedStructure.building}. This indicates a server-side issue or race condition with /api/set-building.`);
-                showMessage(errorMessageEl, `Data mismatch: Expected structure for ${buildingToFetchFor} but received for ${fetchedStructure.building}. Please try re-selecting building.`, true);
+                showMessage(errorMessageEl, `Data mismatch:Please Clcik "Refresh Schedule". Expected structure for ${buildingToFetchFor} but received for ${fetchedStructure.building}.`, true);
                 return false;
             }
 

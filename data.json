@@ -27750,16 +27750,6 @@
     "description": ""
   },
   {
-    "id": "CMS2024_928291",
-    "title": "Project Work 2 - Experiment (IAD) , Bachler Birgit, Standardgruppe, AP152.03.307 (CMS 2024)",
-    "start": "2025-05-07T12:15:00",
-    "end": "2025-05-07T15:15:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#C00C82",
-    "description": ""
-  },
-  {
     "id": "JPR2024_916798",
     "title": "Journalismus-Projekt , Mathelitsch Sandra, JPR24 G1, AP152.01.108 (JPR 2024)",
     "start": "2025-05-07T12:15:00",
@@ -28151,7 +28141,7 @@
   },
   {
     "id": "CMS2024_938100",
-    "title": "App Design 1 , Treffinger Philipp, Standardgruppe, AP152.03.307 (CMS 2024)",
+    "title": "App Design 1 , Treffinger Philipp, Standardgruppe, AP152.EG.002 (CMS 2024)",
     "start": "2025-05-09T12:15:00",
     "end": "2025-05-09T16:15:00",
     "allday": false,
@@ -28161,7 +28151,7 @@
   },
   {
     "id": "IND2023_926624",
-    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe B, AP152.01.106 (IND 2023)",
+    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe B, AP152.01.108 (IND 2023)",
     "start": "2025-05-09T13:15:00",
     "end": "2025-05-09T17:30:00",
     "allday": false,
@@ -28587,16 +28577,6 @@
     "allday": false,
     "className": "timetable_group_Gruppe A",
     "color": "#3C21AB",
-    "description": ""
-  },
-  {
-    "id": "MIG2022_932989",
-    "title": "Projekt: International Business Modelling & Community Work , Jovanovski Bojan, Gruppe 3, AP152.04.401 (MIG 2022)",
-    "start": "2025-05-20T11:15:00",
-    "end": "2025-05-20T15:00:00",
-    "allday": false,
-    "className": "timetable_group_Gruppe 3",
-    "color": "#BE590E",
     "description": ""
   },
   {
@@ -29090,16 +29070,6 @@
     "description": ""
   },
   {
-    "id": "COS2024_929664",
-    "title": "COS24_Special_Workshops , -, Standardgruppe, AP152.01.107 (COS 2024)",
-    "start": "2025-05-22T09:00:00",
-    "end": "2025-05-22T18:00:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#08ADC4",
-    "description": ""
-  },
-  {
     "id": "IND2024_925880",
     "title": "Exhibition Design , Schrempf Eberhard, Gruppe C, AP152.02.209 (IND 2024)",
     "start": "2025-05-22T09:15:00",
@@ -29240,8 +29210,8 @@
     "description": ""
   },
   {
-    "id": "CMS2024_931923",
-    "title": "Sonderlehrveranstaltung 2. Semester CD , NN CMS NN CMS, Standardgruppe, AP152.03.302 (CMS 2024)",
+    "id": "CMS2024_932901",
+    "title": "Sonderlehrveranstaltung 2. Semester SD , NN CMS NN CMS, Standardgruppe, AP152.03.302 (CMS 2024)",
     "start": "2025-05-22T13:15:00",
     "end": "2025-05-22T15:30:00",
     "allday": false,
@@ -29250,8 +29220,8 @@
     "description": ""
   },
   {
-    "id": "CMS2024_932901",
-    "title": "Sonderlehrveranstaltung 2. Semester SD , NN CMS NN CMS, Standardgruppe, AP152.03.302 (CMS 2024)",
+    "id": "CMS2024_931923",
+    "title": "Sonderlehrveranstaltung 2. Semester CD , NN CMS NN CMS, Standardgruppe, AP152.03.302 (CMS 2024)",
     "start": "2025-05-22T13:15:00",
     "end": "2025-05-22T15:30:00",
     "allday": false,
@@ -29307,16 +29277,6 @@
     "allday": false,
     "className": "timetable_group_Gruppe A",
     "color": "#2D1E7F",
-    "description": ""
-  },
-  {
-    "id": "COS2024_924553",
-    "title": "Informationsarchitektur , Erickson Lief, Standardgruppe, AP152.01.107 (COS 2024)",
-    "start": "2025-05-23T09:00:00",
-    "end": "2025-05-23T18:00:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#08ADC4",
     "description": ""
   },
   {
@@ -29407,16 +29367,6 @@
     "allday": false,
     "className": "timetable_group_JPR23 OK",
     "color": "#CB01A0",
-    "description": ""
-  },
-  {
-    "id": "COS2024_929665",
-    "title": "COS24_Special_Workshops , -, Standardgruppe, AP152.01.107 (COS 2024)",
-    "start": "2025-05-24T09:00:00",
-    "end": "2025-05-24T17:00:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#08ADC4",
     "description": ""
   },
   {
@@ -29980,16 +29930,6 @@
     "description": ""
   },
   {
-    "id": "IND2023_926627",
-    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe C, AP152.01.106 (IND 2023)",
-    "start": "2025-05-30T08:15:00",
-    "end": "2025-05-30T12:30:00",
-    "allday": false,
-    "className": "timetable_group_Gruppe C",
-    "color": "#CC00C0",
-    "description": ""
-  },
-  {
     "id": "IND2024_925877",
     "title": "Exhibition Design , Schrempf Eberhard, Gruppe C, AP152.02.209 (IND 2024)",
     "start": "2025-05-30T09:15:00",
@@ -30017,16 +29957,6 @@
     "allday": false,
     "className": "timetable_group_Gruppe C",
     "color": "#C105C7",
-    "description": ""
-  },
-  {
-    "id": "IND2023_926625",
-    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe B, AP152.01.106 (IND 2023)",
-    "start": "2025-05-30T13:15:00",
-    "end": "2025-05-30T17:30:00",
-    "allday": false,
-    "className": "timetable_group_Gruppe B",
-    "color": "#AC205E",
     "description": ""
   },
   {
@@ -30790,6 +30720,16 @@
     "description": ""
   },
   {
+    "id": "IND2023_926627",
+    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe C, AP152.01.106 (IND 2023)",
+    "start": "2025-06-06T08:15:00",
+    "end": "2025-06-06T12:30:00",
+    "allday": false,
+    "className": "timetable_group_Gruppe C",
+    "color": "#CC00C0",
+    "description": ""
+  },
+  {
     "id": "CMS2024_927145",
     "title": "Project Work 2 - Experiment (COD) , NN CMS NN CMS, Standardgruppe, AP152.01.105 (CMS 2024)",
     "start": "2025-06-06T09:15:00",
@@ -30867,6 +30807,16 @@
     "allday": false,
     "className": "timetable_group_Gruppe C",
     "color": "#C105C7",
+    "description": ""
+  },
+  {
+    "id": "IND2023_926625",
+    "title": "Kommunikationsmethoden , Rieger Elisabeth, Gruppe B, AP152.01.106 (IND 2023)",
+    "start": "2025-06-06T13:15:00",
+    "end": "2025-06-06T17:30:00",
+    "allday": false,
+    "className": "timetable_group_Gruppe B",
+    "color": "#AC205E",
     "description": ""
   },
   {
@@ -31444,16 +31394,6 @@
     "title": "Project Work 2 - Experiment (MED) , Pivec Maja, Standardgruppe, AP152.04.401 (CMS 2024)",
     "start": "2025-06-13T09:00:00",
     "end": "2025-06-13T12:30:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#C00C82",
-    "description": ""
-  },
-  {
-    "id": "CMS2024_928382",
-    "title": "Presentation Strategies , Pavlov Illya, Standardgruppe, AP152.03.302 (CMS 2024)",
-    "start": "2025-06-13T09:15:00",
-    "end": "2025-06-13T13:15:00",
     "allday": false,
     "className": "timetable_group_Standardgruppe",
     "color": "#C00C82",
@@ -32397,6 +32337,16 @@
     "allday": false,
     "className": "timetable_group_Standardgruppe",
     "color": "#C00C82",
+    "description": ""
+  },
+  {
+    "id": "IND2023_940685",
+    "title": "Prüfungstermin: B14.0373402 25S 2SSt IL Kunsttheorie und gestalterische Praxis 4  bei Hofmüller, -, AP152.01.104 (IND 2023)",
+    "start": "2025-06-24T14:15:00",
+    "end": "2025-06-24T15:00:00",
+    "allday": false,
+    "className": "timetable_group_",
+    "color": "#B91368",
     "description": ""
   },
   {
@@ -34597,6 +34547,16 @@
     "allday": false,
     "className": "timetable_group_Standardgruppe",
     "color": "#C804A5",
+    "description": ""
+  },
+  {
+    "id": "AUD2024_940637",
+    "title": "Prüfungstermin: M19.0375302 25W 1SSt VO Budgetierung und Kostenwesen  bei Hatzl-Schönbacher, -, AP152.02.210 (AUD 2024)",
+    "start": "2026-01-22T10:15:00",
+    "end": "2026-01-22T11:00:00",
+    "allday": false,
+    "className": "timetable_group_",
+    "color": "#06BCC6",
     "description": ""
   },
   {

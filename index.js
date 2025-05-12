@@ -1,68 +1,154 @@
 // index.js
-const express = require('express');
-const fs      = require('fs');
-const path    = require('path');
+const express      = require('express');
+const cookieParser = require('cookie-parser');
+const bodyParser   = require('body-parser');
+const path         = require('path');
 
-const DATA_URL  = 'https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=AP152';
-const DATA_FILE = path.join(__dirname, 'data.json');
-const PORT      = process.env.PORT || 3000;
+let currentBuildingCode = 'AP152'; // default if nothing set
+const PUBLIC_DIR       = path.join(__dirname, 'public');
+const DATA_FILE_PREFIX = 'data_';
+const PORT             = process.env.PORT || 3100;
 
-let rawData = [];
-let structure = { floors: {} };
-
-// 1) fetch & cache, then rebuild structure
-async function updateData() {
-    try {
-        const res  = await fetch(DATA_URL);
-        const json = await res.json();
-        fs.writeFileSync(DATA_FILE, JSON.stringify(json, null, 2));
-        rawData = json;
-        rebuildStructure();
-        console.log(new Date().toISOString(), '– data.json & structure updated');
-    } catch (err) {
-        console.error(new Date().toISOString(), '– fetch failed:', err);
-    }
-}
-
-function rebuildStructure() {
-    const floors = {};
-    const CODE_RX = /\b([A-Za-z]{2}\d{3})\.([A-Za-z0-9]{2})\.([A-Za-z0-9]{3}[A-Za-z]?)\b/;
-
-    rawData.forEach(e => {
-        let m = e.description.match(CODE_RX);
-        if (!m) return;
-        let [ , building, floor, roomNum ] = m[0].split('.');
-        if (building !== 'AP152') return;
-
-        floors[floor] = floors[floor] || new Set();
-        floors[floor].add(roomNum);
-    });
-
-    // convert sets → arrays and sort
-    structure.floors = {};
-    for (let [floor, rooms] of Object.entries(floors)) {
-        structure.floors[floor] = Array.from(rooms).sort();
-    }
-}
-
-// initial load + every 2h
-updateData();
-setInterval(updateData, 2 * 60 * 60 * 1000);
+let rawData   = [];
+let structure = { building: currentBuildingCode, floors: {} };
 
 const app = express();
-app.use(express.static(path.join(__dirname)));
 
-// serve the cached JSON if needed
+// parse cookies & JSON bodies
+app.use(cookieParser());
+app.use(bodyParser.json());
+
+// ensure public folder exists
+if (!require('fs').existsSync(PUBLIC_DIR)) {
+    require('fs').mkdirSync(PUBLIC_DIR, { recursive: true });
+}
+
+// ********** Onboarding vs Schedule **********
+
+app.get('/', (req, res) => {
+    const cookie = req.cookies.currentBuilding;
+    if (cookie) {
+        // user already picked a building → go to main schedule
+        return res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+    }
+    // new user → onboarding
+    res.sendFile(path.join(PUBLIC_DIR, 'onboarding.html'));
+});
+
+// now serve all your static assets, but don't auto-serve index.html
+app.use(express.static(PUBLIC_DIR, { index: false }));
+
+// ********** Data Fetch & Structure Logic **********
+
+function escapeRegExp(string) {
+    return string ? string.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') : '';
+}
+
+// parse room details out of an event
+function parseRoomDetails(event, building) {
+    if (!building) return null;
+    const esc = escapeRegExp(building);
+    const RX = new RegExp(`\\b(${esc})\\.([A-Za-z0-9]{1,3})\\.([A-Za-z0-9]{3}[A-Za-z]?)\\b`);
+    let text = event.title || '';
+    if (Array.isArray(event.className)) text += ' '+event.className.join(' ');
+    else if (event.className) text += ' '+event.className;
+    const m = text.match(RX);
+    return m ? { fullCode:m[0], building:m[1], floor:m[2], roomNum:m[3] } : null;
+}
+
+async function updateData(building) {
+    const url  = `https://almaty.fh-joanneum.at/stundenplan/json.php?submit=Suche&q=${building}`;
+    const file = path.join(PUBLIC_DIR, `${DATA_FILE_PREFIX}${building}.json`);
+    console.log(new Date().toISOString(), 'Fetching for', building, 'from', url);
+    try {
+        const fetchFn = typeof fetch==='undefined'
+            ? (await import('node-fetch')).default
+            : fetch;
+        const res = await fetchFn(url);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const json = await res.json();
+        require('fs').writeFileSync(file, JSON.stringify(json, null,2));
+        console.log(new Date().toISOString(), 'Saved', file);
+        // If it's our active building, load it into memory
+        if (building===currentBuildingCode) {
+            rawData = json;
+            rebuildStructure(building);
+        }
+        return { success:true };
+    } catch(err) {
+        console.error('Fetch failed:', err);
+        if (building===currentBuildingCode) {
+            rawData = [];
+            structure = { building, floors:{} };
+        }
+        return { success:false, error:err.message };
+    }
+}
+
+function rebuildStructure(building) {
+    console.log('Rebuilding structure for', building);
+    const map = new Map();
+    if (!rawData.length) {
+        structure = { building, floors:{} };
+        return;
+    }
+    rawData.forEach(ev => {
+        const d = parseRoomDetails(ev, building);
+        if (d && d.building===building) {
+            if (!map.has(d.floor)) map.set(d.floor, new Set());
+            map.get(d.floor).add(d.roomNum);
+        }
+    });
+    const floors = {};
+    Array.from(map.keys()).sort().forEach(f => {
+        floors[f] = Array.from(map.get(f)).sort();
+    });
+    structure = { building, floors };
+}
+
+// initial load for default building
+(async()=>{ await updateData(currentBuildingCode); })();
+
+// ********** API Endpoints **********
+
+// set-building: invoked from onboarding.js
+app.post('/api/set-building', async (req, res) => {
+    const b = req.body.buildingCode;
+    if (!b) return res.status(400).json({ error:'Missing buildingCode' });
+    currentBuildingCode = b;
+    // set cookie so root "/" will know
+    res.cookie('currentBuilding', b, { maxAge:365*24*60*60*1000, path:'/' });
+    const result = await updateData(b);
+    if (result.success) return res.json({ message:`Building set to ${b}` });
+    res.status(500).json({ error: result.error });
+});
+
+// current-selection-info: for client to display current building
+app.get('/api/current-selection-info', (req, res) => {
+    res.json({ campus:'FH JOANNEUM Graz', building:currentBuildingCode });
+});
+
+// rooms list
 app.get('/api/rooms', (req, res) => {
-    if (!rawData.length) return res.status(503).json({error:'no data yet'});
+    if (!rawData.length) {
+        return res.status(503).json({ error:`No data for ${currentBuildingCode}` });
+    }
     res.json(rawData);
 });
 
-// **new**: structure endpoint
+// structure (floors/rooms)
 app.get('/api/structure', (req, res) => {
+    if (!structure.floors || !Object.keys(structure.floors).length) {
+        // try a rebuild if stale
+        if (rawData.length) rebuildStructure(currentBuildingCode);
+        if (!Object.keys(structure.floors).length) {
+            return res.status(503).json({ error:`No structure for ${currentBuildingCode}` });
+        }
+    }
     res.json(structure);
 });
 
-app.listen(PORT, () =>
-    console.log(`Listening on http://localhost:${PORT}`)
-);
+// start server
+app.listen(PORT, () => {
+    console.log(`Listening on http://localhost:${PORT} (building=${currentBuildingCode})`);
+});

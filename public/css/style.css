@@ -1,0 +1,401 @@
+/* public/css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #007AFF;
+    --secondary-color: #6c757d;
+    --success-color: #34C759;
+    --accent-color: #FF9500;
+    --danger-color: #FF3B30;
+    --light-bg: #F2F2F7;
+    --content-bg: #FFFFFF;
+    --text-color: #1C1C1E;
+    --subtle-text-color: #8A8A8E;
+    --border-color: #D1D1D6;
+    --border-radius-small: 8px;
+    --border-radius-medium: 12px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 1em;
+}
+
+header {
+    text-align: center;
+    padding: 1em 0 1.5em;
+    color: var(--subtle-text-color);
+}
+header h1 {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 0.25em;
+    font-size: 2rem;
+}
+.nav-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+
+main {
+    max-width: 900px;
+    margin: 0 auto 2em auto;
+    padding: 1.5em;
+    background-color: var(--content-bg);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--box-shadow);
+}
+
+.controls-container {
+    margin-bottom: 2em;
+    padding: 1.5em;
+    background-color: #fff;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--border-color);
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1em 1.5em;
+}
+
+.controls label {
+    font-weight: 500;
+    margin-right: 0.5em;
+    color: var(--text-color);
+}
+
+.controls input[type="date"],
+.controls input[type="time"],
+.controls select {
+    padding: 0.7em 1em;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-size: 1rem;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    min-width: 150px;
+}
+.controls input[type="date"]:focus,
+.controls input[type="time"]:focus,
+.controls select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+}
+
+.controls button, .show-more-button, .back-button {
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: var(--border-radius-small);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.controls button:hover, .show-more-button:hover, .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.controls button:active, .show-more-button:active, .back-button:active {
+    transform: translateY(0px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.button-primary { background-color: var(--primary-color); }
+.button-primary:hover { background-color: #005bb5; }
+.button-success { background-color: var(--success-color); }
+.button-success:hover { background-color: #29a347; }
+.button-accent { background-color: var(--accent-color); }
+.button-accent:hover { background-color: #d97f00; }
+.button-secondary { background-color: var(--secondary-color); color: white; }
+.button-secondary:hover { background-color: #545b62; }
+.back-button { margin-bottom: 1.5em; }
+
+
+#message-area {
+    text-align: center;
+    margin: 1.5em 0;
+    padding: 0 1em;
+}
+.message {
+    padding: 1em;
+    border-radius: var(--border-radius-small);
+    font-weight: 500;
+}
+.message.error {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+}
+#loading-indicator {
+    color: var(--primary-color);
+    background-color: rgba(0, 122, 255, 0.05);
+    border: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+
+#schedule, .room-list, .schedule-detail-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1em;
+}
+
+#schedule li.card, .room-list li, .schedule-detail-list li {
+    background: var(--content-bg);
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    margin-bottom: 1.2em;
+    padding: 1.2em 1.5em;
+    border-left: 6px solid var(--secondary-color);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+#schedule li.card:hover, .room-list li:hover, .schedule-detail-list li:hover {
+    box-shadow: var(--box-shadow-hover);
+    transform: translateY(-3px);
+}
+
+.room-list li.clickable-room {
+    cursor: pointer;
+    border-left-color: var(--accent-color);
+}
+.room-list li.clickable-room:hover {
+    border-left-color: var(--primary-color);
+}
+
+
+.card-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.8em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid var(--border-color);
+}
+.event {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.7em;
+    padding-bottom: 0.7em;
+    border-bottom: 1px dashed #e0e0e0;
+}
+.event:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+.event .time {
+    flex: 0 0 8.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+.event .title {
+    flex: 1;
+    color: var(--subtle-text-color);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.room-list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em 1em;
+}
+.room { font-weight: 600; color: var(--primary-color); font-size: 1.1rem; flex-basis: 150px; }
+.interval { color: var(--text-color); font-size: 1rem; flex-basis: 120px; text-align: center;}
+.duration {
+    background-color: var(--success-color);
+    color: white;
+    padding: 0.4em 0.8em;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 60px;
+    text-align: center;
+    flex-basis: 80px;
+}
+
+#free-now-section h2, #available-soon-section h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.75em;
+    margin-top: 1.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid var(--primary-color);
+}
+#free-now-section h2:first-child, #available-soon-section h2:first-child {
+    margin-top: 0;
+}
+#free-now-time-display, #available-soon-time-display {
+    font-weight: normal;
+    font-size: 0.9em;
+    color: var(--subtle-text-color);
+}
+
+/* Modal Styles (Ensure these are present or add them) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); /* Darker overlay */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    padding-top: 5vh; /* Give some space from top */
+}
+.modal-content {
+    background-color: var(--content-bg);
+    margin: auto; /* Centered */
+    padding: 25px 30px; /* More padding */
+    border-radius: var(--border-radius-medium);
+    width: 90%;
+    max-width: 650px; /* Max width for readability */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDownModal 0.3s ease-out;
+}
+@keyframes slideDownModal {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+.modal-header h2 { /* Style for modal title */
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.close-button {
+    color: var(--subtle-text-color);
+    font-size: 32px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0 5px; /* Make it easier to click */
+    line-height: 1;
+}
+.close-button:hover {
+    color: var(--danger-color);
+}
+.modal-body #modal-room-schedule-list { /* Target specific list in modal */
+    max-height: 60vh; /* Limit height and allow scroll */
+    overflow-y: auto;
+    padding-right: 10px; /* Space for scrollbar if it appears */
+}
+#modal-room-schedule-date-display {
+    margin-bottom: 1em;
+    font-size: 1.1rem;
+    color: var(--subtle-text-color);
+}
+.schedule-detail-list li.event-detail-item { /* Styles for event items in modal */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8em 0;
+    border-bottom: 1px dashed var(--border-color);
+    border-left: none; /* Override general list item style if needed */
+    margin-bottom: 0; /* Override general list item style */
+    box-shadow: none; /* Override general list item style */
+}
+.schedule-detail-list li.event-detail-item:hover {
+    background-color: var(--light-bg); /* Subtle hover for modal list items */
+    transform: none; /* No transform for modal list items */
+    box-shadow: none;
+}
+.schedule-detail-list li.event-detail-item:last-child {
+    border-bottom: none;
+}
+.schedule-detail-list li.event-detail-item .time {
+    flex: 0 0 9rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+.schedule-detail-list li.event-detail-item .title {
+    flex: 1;
+    color: var(--subtle-text-color);
+    font-size: 0.95rem;
+}
+
+.room-list li.clickable-room { /* Style for clickable room items in main lists */
+    cursor: pointer;
+    border-left-color: var(--accent-color);
+}
+.room-list li.clickable-room:hover {
+    border-left-color: var(--primary-color);
+}
+
+/* Responsive adjustments for modal if needed */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 5vh auto;
+        padding: 20px;
+    }
+    .modal-header h2 {
+        font-size: 1.4rem;
+    }
+    .schedule-detail-list li.event-detail-item { /* Ensure modal event items also stack on mobile */
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3em;
+    }
+    .schedule-detail-list li.event-detail-item .time {
+        flex-basis: auto;
+        margin-bottom: 0.3em;
+    }
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem; /* space between icon + title */
+        padding: 1rem;
+    }
+
+    .back-button {
+        text-decoration: none;
+        color: #007aff; /* match your accent */
+    }
+
+    .back-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+}

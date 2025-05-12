@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Find Free Rooms</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .location-card {
+            background-color: #f9f9f9;
+            padding: 1em 1.5em;
+            border-radius: var(--border-radius-medium);
+            margin-bottom: 2em;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .location-info p {
+            margin: 0.2em 0;
+            color: var(--text-color);
+        }
+        .location-info .campus {
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+        .location-info .building {
+            font-weight: 600;
+            font-size: 1.3em;
+            color: var(--primary-color);
+        }
+        .edit-location-btn { /* Shared with index.html, ensure style is in style.css or defined here */
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5em 0.8em;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+        }
+        .edit-location-btn svg {
+            margin-right: 0.4em;
+            width: 1em;
+            height: 1em;
+        }
+        .edit-location-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<header style="position:relative; padding:1rem;">
+    <a href="/index.html" style="position:absolute; left:1rem; display:inline-flex; align-items:center; color:#007aff; text-decoration:none;" aria-label="Back to Schedule">
+        <svg viewBox="0 0 16 16" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 14L5 8l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="margin-left:4px; font-size:1rem;">Full Schedule</span>
+    </a>
+    <h1 style="margin:0; font-size:1.5rem; text-align:center;">Find Free Rooms</h1>
+</header>
+<main>
+    <div class="location-card">
+        <div class="location-info">
+            <p class="campus">FH JOANNEUM Graz</p>
+            <p class="building" id="currentBuildingDisplayFreespace">Loading building...</p>
+        </div>
+        <button
+                class="edit-location-btn"
+                onclick="
+    /* clear our cookie */
+    document.cookie='currentBuilding=; Max-Age=0; path=/';
+    /* redirect to onboarding */
+    window.location.href='/';
+  ">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="1em" height="1em" style="margin-right: 0.4em; vertical-align: text-bottom;">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+            </svg>
+            Edit
+        </button>
+    </div>
+
+    <div class="controls-container">
+        <div class="controls">
+            <label for="date">Date:</label>
+            <input type="date" id="date">
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" step="300">
+
+            <label for="floor">Floor:</label>
+            <select id="floor"><option value="">All Floors</option></select>
+
+            <label for="room">Room:</label>
+            <select id="room"><option value="">All Rooms</option></select>
+        </div>
+    </div>
+
+    <div id="message-area">
+        <div id="loading-indicator" class="message" style="display:none;">Loading...</div>
+        <div id="error-message" class="message error" style="display:none;"></div>
+    </div>
+
+    <section id="free-now-section">
+        <h2>Free Now <span id="free-now-time-display"></span></h2>
+        <ul id="free-now-list" class="room-list"></ul>
+        <button id="free-now-show-more" class="button-secondary show-more-button" style="display:none;">Show More</button>
+        <br>
+    </section>
+
+    <section id="all-day-free-section" style="display:none;">
+        <h2 id="all-day-title">All Free Slots from Selected Time</h2>
+        <ul id="all-day-free-list" class="room-list"></ul>
+        <button id="all-day-show-more" class="button-secondary show-more-button" style="display:none;">Show More</button>
+        <br>
+    </section>
+
+    <section id="available-soon-section">
+        <h2>Available Soon <small>(≥45 min, after <span id="available-soon-time-display"></span>)</small></h2>
+        <ul id="available-soon-list" class="room-list"></ul>
+        <button id="available-soon-show-more" class="button-secondary show-more-button" style="display:none;">Show More</button>
+        <br>
+    </section>
+
+    <div id="room-schedule-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Schedule for <span id="modal-room-name"></span> on <span id="modal-room-date"></span></h2>
+                <button id="modal-close-button" class="close-button">✕</button>
+            </div>
+            <div class="modal-body">
+                <ul id="modal-room-schedule-list" class="schedule-list"></ul>
+                <p id="modal-no-events" class="message" style="display:none;">No scheduled events for this room.</p>
+            </div>
+        </div>
+        <div class="modal-backdrop"></div>
+    </div>
+
+</main>
+<footer><p>Room Finder Service</p></footer>
+<script src="js/freespace-app.js"></script>
+</body>
+</html>

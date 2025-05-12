@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Building - Room Scheduler</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--light-bg);
+        }
+        .onboarding-container {
+            max-width: 500px;
+            width: 90%;
+            margin: 2em auto;
+            padding: 2.5em;
+            background-color: var(--content-bg);
+            border-radius: var(--border-radius-medium);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+        header#onboarding-header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5em;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6em;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        .form-group select, .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.8em 1em;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-small);
+            font-size: 1rem;
+            background-color: #fff;
+        }
+        .form-group input[disabled] {
+            background-color: var(--light-bg);
+            cursor: not-allowed;
+        }
+        #setBuildingBtn {
+            width: 100%;
+            padding: 0.8em 1.5em;
+            font-size: 1.05rem;
+            margin-top: 1em;
+        }
+        .status-message {
+            margin-top: 1.5em;
+            padding: 0.8em;
+            border-radius: var(--border-radius-small);
+            text-align: center;
+        }
+        .status-message.success {
+            background-color: rgba(52, 199, 89, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+        }
+        .status-message.error {
+            background-color: rgba(255, 59, 48, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+    </style>
+</head>
+<body>
+<div class="onboarding-container">
+    <header id="onboarding-header">
+        <h1>Welcome to Room Scheduler</h1>
+    </header>
+    <p style="margin-bottom: 2em; color: var(--subtle-text-color);">
+        Please select your campus and building to get started.
+    </p>
+    <div class="form-group">
+        <label for="university">Campus:</label>
+        <input type="text" id="university" value="FH JOANNEUM Graz" disabled>
+    </div>
+
+    <div class="form-group">
+        <label for="buildingSelector">Select Building:</label>
+        <select id="buildingSelector">
+            <option value="AP152">AP152 (Default)</option>
+            <option value="AP147">AP147</option>
+            <option value="AP149">AP149</option>
+            <option value="AP154">AP154</option>
+            <option value="EA11">EA11</option>
+            <option value="EA9">EA9</option>
+            <option value="EA13">EA13</option>
+            <option value="ES30i">ES30i</option>
+            <option value="ES7a">ES7a</option>
+            <option value="ES7b">ES7b</option>
+        </select>
+    </div>
+
+    <button id="setBuildingBtn" class="button-primary">Continue</button>
+
+    <div id="onboardingStatus" class="status-message" style="display: none;"></div>
+</div>
+<footer id="onboarding-footer">
+    <p>Room Scheduler Onboarding</p>
+</footer>
+
+<script src="js/onboarding.js"></script>
+</body>
+</html>

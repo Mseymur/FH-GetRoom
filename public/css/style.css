@@ -2,20 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color: #007AFF;
-    --secondary-color: #6c757d;
-    --success-color: #34C759;
-    --accent-color: #FF9500;
-    --danger-color: #FF3B30;
-    --light-bg: #F2F2F7;
+    /* FH JOANNEUM Brand Colors */
+    --primary-color: #E2001A; /* FH JOANNEUM Red */
+    --primary-dark: #B30015; /* Darker red for hover states */
+    --secondary-color: #666666;
+    --success-color: #2E7D32;
+    --accent-color: #FF6B00;
+    --danger-color: #D32F2F;
+    --light-bg: #F5F7FA;
     --content-bg: #FFFFFF;
-    --text-color: #1C1C1E;
-    --subtle-text-color: #8A8A8E;
-    --border-color: #D1D1D6;
-    --border-radius-small: 8px;
-    --border-radius-medium: 12px;
-    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+    --text-color: #1A1A1A;
+    --subtle-text-color: #666666;
+    --border-color: #E0E0E0;
+    --border-radius-small: 6px;
+    --border-radius-medium: 10px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -30,19 +32,23 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     margin: 0;
-    padding: 1em;
+    padding: 1.5em;
 }
 
 header {
     text-align: center;
-    padding: 1em 0 1.5em;
-    color: var(--subtle-text-color);
+    padding: 1.5em 0 2em;
+    background-color: var(--primary-color);
+    margin: -1.5em -1.5em 2em -1.5em;
+    border-radius: 0 0 var(--border-radius-medium) var(--border-radius-medium);
 }
+
 header h1 {
-    color: var(--primary-color);
+    color: white;
     font-weight: 700;
     margin-bottom: 0.25em;
-    font-size: 2rem;
+    font-size: 2.2rem;
+    letter-spacing: -0.5px;
 }
 .nav-link {
     color: var(--primary-color);
@@ -65,74 +71,98 @@ main {
 
 .controls-container {
     margin-bottom: 2em;
-    padding: 1.5em;
-    background-color: #fff;
+    padding: 1.8em;
+    background-color: var(--content-bg);
     border-radius: var(--border-radius-medium);
     border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
 }
 
 .controls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    gap: 1em 1.5em;
+    gap: 1.2em 2em;
 }
 
 .controls label {
-    font-weight: 500;
+    font-weight: 600;
     margin-right: 0.5em;
     color: var(--text-color);
+    font-size: 0.95rem;
 }
 
 .controls input[type="date"],
 .controls input[type="time"],
 .controls select {
-    padding: 0.7em 1em;
+    padding: 0.8em 1.2em;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-small);
-    font-size: 1rem;
+    font-size: 0.95rem;
     background-color: var(--light-bg);
     color: var(--text-color);
-    min-width: 150px;
+    min-width: 160px;
+    transition: all 0.2s ease;
 }
+
 .controls input[type="date"]:focus,
 .controls input[type="time"]:focus,
 .controls select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
 }
 
 .controls button, .show-more-button, .back-button {
-    padding: 0.75em 1.5em;
+    padding: 0.8em 1.6em;
     border: none;
     border-radius: var(--border-radius-small);
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
     color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--box-shadow);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-}
-.controls button:hover, .show-more-button:hover, .back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-.controls button:active, .show-more-button:active, .back-button:active {
-    transform: translateY(0px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    gap: 0.5em;
 }
 
-.button-primary { background-color: var(--primary-color); }
-.button-primary:hover { background-color: #005bb5; }
-.button-success { background-color: var(--success-color); }
-.button-success:hover { background-color: #29a347; }
-.button-accent { background-color: var(--accent-color); }
-.button-accent:hover { background-color: #d97f00; }
+.button-primary { 
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: white;
+}
+
+.button-primary:hover { 
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.button-success { 
+    background-color: var(--success-color);
+    border: 1px solid var(--success-color);
+    color: white;
+}
+
+.button-success:hover { 
+    background-color: #1B5E20;
+    border-color: #1B5E20;
+}
+
+.button-accent { 
+    background-color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    color: white;
+}
+
+.button-accent:hover { 
+    background-color: #E65100;
+    border-color: #E65100;
+}
+
 .button-secondary { background-color: var(--secondary-color); color: white; }
 .button-secondary:hover { background-color: #545b62; }
 .back-button { margin-bottom: 1.5em; }
@@ -149,9 +179,13 @@ main {
     font-weight: 500;
 }
 .message.error {
-    background-color: rgba(255, 59, 48, 0.1);
+    background-color: rgba(211, 47, 47, 0.1);
     color: var(--danger-color);
-    border: 1px solid rgba(255, 59, 48, 0.3);
+    border: 1px solid rgba(211, 47, 47, 0.3);
+    padding: 1em;
+    border-radius: var(--border-radius-small);
+    margin: 1em 0;
+    font-weight: 500;
 }
 #loading-indicator {
     color: var(--primary-color);
@@ -169,11 +203,11 @@ main {
 #schedule li.card, .room-list li, .schedule-detail-list li {
     background: var(--content-bg);
     border-radius: var(--border-radius-medium);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    box-shadow: var(--box-shadow);
     margin-bottom: 1.2em;
-    padding: 1.2em 1.5em;
-    border-left: 6px solid var(--secondary-color);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    padding: 1.4em 1.8em;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.2s ease;
 }
 #schedule li.card:hover, .room-list li:hover, .schedule-detail-list li:hover {
     box-shadow: var(--box-shadow-hover);
@@ -190,36 +224,36 @@ main {
 
 
 .card-header {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 0.8em;
-    padding-bottom: 0.6em;
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1em;
+    padding-bottom: 0.8em;
+    border-bottom: 2px solid var(--border-color);
 }
 .event {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.7em;
-    padding-bottom: 0.7em;
-    border-bottom: 1px dashed #e0e0e0;
+    margin-bottom: 0.8em;
+    padding-bottom: 0.8em;
+    border-bottom: 1px solid var(--border-color);
 }
 .event:last-child {
     margin-bottom: 0;
     border-bottom: none;
 }
 .event .time {
-    flex: 0 0 8.5rem;
-    font-weight: 500;
+    flex: 0 0 9rem;
+    font-weight: 600;
     color: var(--text-color);
     font-size: 0.95rem;
 }
 .event .title {
     flex: 1;
-    color: var(--subtle-text-color);
-    font-size: 0.9rem;
-    line-height: 1.4;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .room-list li {
@@ -397,5 +431,411 @@ main {
     .back-icon {
         width: 1.5rem;
         height: 1.5rem;
+    }
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-top: 0.5em;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.button-group {
+    display: flex;
+    gap: 1em;
+    margin-top: 0.5em;
+}
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    color: var(--primary-color);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+#schedule-container {
+    margin-top: 2em;
+}
+
+footer {
+    text-align: center;
+    padding: 2em 0;
+    color: var(--subtle-text-color);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    margin-top: 1em;
+}
+
+.footer-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.separator {
+    margin: 0 0.5em;
+    color: var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1em;
+    }
+
+    header {
+        margin: -1em -1em 1.5em -1em;
+        padding: 1.2em 0 1.5em;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .controls-container {
+        padding: 1em;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .control-group {
+        width: 100%;
+    }
+
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.8em;
+    }
+
+    .button-group button {
+        width: 100%;
+        padding: 1em;
+        font-size: 1rem;
+    }
+
+    #schedule li.card {
+        padding: 1.2em;
+        margin-bottom: 1em;
+    }
+
+    .event {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .event .time {
+        width: 100%;
+        margin-bottom: 0.3em;
+    }
+
+    .event .title {
+        width: 100%;
+    }
+
+    /* Improve touch targets */
+    .controls input[type="date"],
+    .controls input[type="time"],
+    .controls select {
+        padding: 1em;
+        font-size: 1rem;
+        min-height: 48px;
+    }
+
+    /* Modal improvements for mobile */
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+        margin: 1em auto;
+        padding: 1em;
+    }
+
+    .modal-header {
+        padding: 1em;
+    }
+
+    .modal-body {
+        padding: 1em;
+    }
+
+    /* Full schedule button in freespace */
+    .show-more-button {
+        width: 100%;
+        margin: 1em 0;
+        padding: 1em;
+        font-size: 1rem;
+    }
+}
+
+/* Accessibility Improvements */
+:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    header {
+        background: none;
+        color: black;
+        margin: 0;
+        padding: 1em 0;
+    }
+
+    header h1 {
+        color: black;
+    }
+
+    .subtitle {
+        color: black;
+    }
+
+    .controls-container {
+        display: none;
+    }
+
+    #schedule li.card {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+
+    footer {
+        display: none;
+    }
+}
+
+/* Freespace Page Specific Styles */
+.location-card {
+    background-color: var(--light-bg);
+    padding: 1.2em 1.5em;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 2em;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+}
+
+.location-info p {
+    margin: 0.2em 0;
+    color: var(--text-color);
+}
+
+.location-info .campus {
+    font-weight: 500;
+    font-size: 1.1em;
+}
+
+.location-info .building {
+    font-weight: 600;
+    font-size: 1.3em;
+    color: var(--primary-color);
+}
+
+.edit-location-btn {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.8em 1.2em;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.edit-location-btn svg {
+    margin-right: 0.4em;
+    width: 1em;
+    height: 1em;
+}
+
+.edit-location-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Improved Back Button Styles */
+.back-link {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: var(--border-radius-small);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.back-link:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.back-link svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5em;
+}
+
+.back-link span {
+    font-size: 0.95rem;
+}
+
+.page-header {
+    position: relative;
+    padding: 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    margin: -1.5rem -1.5rem 2rem -1.5rem;
+    border-radius: 0 0 var(--border-radius-medium) var(--border-radius-medium);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    text-align: center;
+    padding: 0 3rem; /* Space for back button */
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+.section-header small {
+    color: var(--subtle-text-color);
+    font-size: 0.9rem;
+}
+
+/* Mobile Optimizations for Freespace Page */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 1.2rem;
+        margin: -1rem -1rem 1.5rem -1rem;
+        min-height: 70px;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+        padding: 0 2.5rem;
+    }
+
+    .back-link {
+        left: 0.8rem;
+        padding: 0.4em 0.8em;
+    }
+
+    .back-link span {
+        display: none;
+    }
+
+    .back-link svg {
+        margin-right: 0;
+    }
+
+    .location-card {
+        padding: 1em;
+        flex-direction: column;
+        gap: 1em;
+        text-align: center;
+    }
+
+    .edit-location-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .controls-container {
+        padding: 1em;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .control-group {
+        width: 100%;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+    }
+
+    .section-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .show-more-button {
+        margin: 0.8em 0;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 1em auto;
     }
 }

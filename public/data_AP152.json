@@ -27510,16 +27510,6 @@
     "description": ""
   },
   {
-    "id": "JPR2023_915496",
-    "title": "Integrierte Kommunikation , Pelzl Christoph, Standardgruppe, AP152.01.103 (JPR 2023)",
-    "start": "2025-05-05T16:15:00",
-    "end": "2025-05-05T18:45:00",
-    "allday": false,
-    "className": "timetable_group_Standardgruppe",
-    "color": "#794C1F",
-    "description": ""
-  },
-  {
     "id": "IND2023_917958",
     "title": "Kunsttheorie und gestalterische Praxis 4 , Hofmüller Reni, Standardgruppe, AP152.04.401 (IND 2023)",
     "start": "2025-05-06T09:15:00",
@@ -28923,7 +28913,7 @@
     "id": "CMS2024_928294",
     "title": "Project Work 2 - Experiment (IAD) , Bachler Birgit, Standardgruppe, AP152.03.307 (CMS 2024)",
     "start": "2025-05-21T13:15:00",
-    "end": "2025-05-21T14:45:00",
+    "end": "2025-05-21T17:30:00",
     "allday": false,
     "className": "timetable_group_Standardgruppe",
     "color": "#C00C82",
@@ -30017,6 +30007,16 @@
     "allday": false,
     "className": "timetable_group_Gruppe B",
     "color": "#7911BB",
+    "description": ""
+  },
+  {
+    "id": "JPR2023_915496",
+    "title": "Integrierte Kommunikation , Pelzl Christoph, Standardgruppe, AP152.01.103 (JPR 2023)",
+    "start": "2025-06-02T16:15:00",
+    "end": "2025-06-02T18:45:00",
+    "allday": false,
+    "className": "timetable_group_Standardgruppe",
+    "color": "#794C1F",
     "description": ""
   },
   {

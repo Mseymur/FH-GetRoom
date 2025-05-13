@@ -158,7 +158,7 @@
         if (freeNowSlots.length === 0) {
           // **fallback** when there's nothing to show
           freeNowListEl.innerHTML =
-            '<li class="no-rooms">Change the "Time" in the top to view schedules. The default window is 08:00 – 18:15 Uhr</li>';
+            '<li class="no-rooms">After 18:15 the regular classes are over. Most of the rooms are still available to use.Do not forget your FH ID to enter to the building.Available rooms are only visible from 8 to 6. Change the time to see then </li>';
           freeNowMoreBtn.style.display = 'none';
         } else {
           // render the normal paginated list
